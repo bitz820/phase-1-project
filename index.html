@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" defer></script>
+    <title>Movie Lists</title>
+</head>
+<body>
+    <!-- Nav with title, search, and button -->
+    <header class="search">
+        <h1>Search for a Movie!</h1>
+        <form id="search-movies">
+            <input type="text" name="searched-movie" placeholder="Enter Movie Here!"/>
+            <input type="submit" id="submit" value="submit">
+        </form>
+    </header>
+
+    <!-- Div that will show all movies upon returning serach -->
+    <div class="results-container">
+        <h1>Results Returned:</h1>
+    </div>
+
+    <!-- Div that will have two unordered lists that can be edited -->
+    <div class="list-container">
+        <ul class="wishlist">
+            <h1>Movies to Watch</h1>
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+            <li>Four</li>
+        </ul>
+        
+        <ul class="seen">
+            <h1>Movies I've Seen</h1>
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+            <li>Four</li>
+        </ul>
+    </div>
+</body>
+</html>

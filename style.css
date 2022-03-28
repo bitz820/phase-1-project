@@ -1,0 +1,23 @@
+.list-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.results-container {
+    border: 5px black solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.list-container ul{
+    /* display: flex;
+    flex-direction: column; */
+    border: 5px black solid;
+    /* justify-content: center; */
+}
+
+.movie-card {
+    background-color: salmon;
+    display: flex;
+    border: 5px black;
+}
