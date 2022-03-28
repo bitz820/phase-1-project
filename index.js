@@ -19,7 +19,7 @@ function createMovieCard (result){
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
-    fetchSearch()
+    // fetchSearch()
 })
 
 function fetchSearch() {
