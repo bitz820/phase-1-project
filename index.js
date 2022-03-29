@@ -94,3 +94,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
 // {"id":"tt12960252","resultType":"Title","image":"https://imdb-api.com/images/original/nopicture.jpg","title":"Inception Premiere","description":"(2010)"}
 
 // ],"errorMessage":""}
+
+const reviewForm = document.querySelector('#movie-review').addEventListener('submit', function(e){
+    e.preventDefault();
+    const review = document.querySelector('#review').value
+    console.log(review)
+    const p = document.createElement('p')
+    p.textContent = review;
+    document.querySelector('.review-container').appendChild(p)
+    e.target.reset()
+})
