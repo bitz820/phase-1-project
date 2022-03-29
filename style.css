@@ -13,6 +13,8 @@ body {
     border: 5px black solid;
     margin: 10px;
     padding: 10px;
+    text-align: center;
+    list-style-position: inside;
 }
 
 .list-container ul{
@@ -48,14 +50,19 @@ body {
 ul {
     text-align: center;
     padding: 10px;
+    list-style-position: inside;
 }
 
 ul.watch {
     background-color: #E8DDB5;
+    text-align: center;
+    list-style-position: inside;
 }
 
 ul.seen {
     background-color: #788AA3;
+    text-align: center;
+    list-style-position: inside;
 }
 
 img {
