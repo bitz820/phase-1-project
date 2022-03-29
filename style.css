@@ -1,9 +1,15 @@
+body {
+    background-color:  #92B6B1;
+}
+
 .list-container{
+    background-color: #92B6B1;
     display: flex;
     justify-content: space-around;
 }
 
 .results-container {
+    background-color: #B2C9AB;
     border: 5px black solid;
     margin: 10px;
     padding: 10px;
@@ -17,7 +23,24 @@
 }
 
 .movie-card {
-    background-color: salmon;
-    display: flex;
+    background-color: #666A86;
+    /* display: flex; */
     border: 5px black;
 }
+
+ul {
+    text-align: center;
+    padding: 10px;
+}
+
+ul.watch {
+    background-color: #E8DDB5;
+}
+
+ul.seen {
+    background-color: #788AA3;
+}
+
+img {
+    max-width: 100%; 
+    max-height: 100%;}
