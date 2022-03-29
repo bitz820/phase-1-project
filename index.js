@@ -19,7 +19,9 @@ function fetchSearch(movie) {
   fetch(`https://imdb-api.com/en/API/SearchMovie/k_fkl6yn80/${movie}`, requestOptions)  
     .then(response => response.json())
     .then(data => {data.results.forEach(
-        result => {createMovieCard(result)
+        result => {console.log(result)
+            
+            createMovieCard(result)
         })
     })
     .catch(error => console.log('error', error))
@@ -53,6 +55,7 @@ function appendReview(e, addSeen, reviewForm){
     userReview.innerText = e.target[0].value
     e.target[0].value = ""
     addSeen.insertBefore(userReview, reviewForm)
+    postReview()
 }
 
 function createReviewForm(addReviewBtn, addSeen){
@@ -73,6 +76,7 @@ function createReviewForm(addReviewBtn, addSeen){
 
 function handleRemove (){
     this.parentElement.remove()
+    // deleteRequest()
 }
 
 function addtoSeenList (result){
@@ -100,6 +104,57 @@ function addToWatchList (result){
     watchList.append(addWatch)
 }    
 
+function fetchWatch (){
+// function fetchLists(){}
+    fetch('http://localhost:8080/toWatch')
+    // fetch(`http://localhost:8080/${list}`)
+    .then(resp => resp.json())
+    .then(movies => {
+        movies.forEach(movie => addToWatchList(movie))
+    })
+}
+
+function fetchSeen (){
+    fetch('http://localhost:8080/seen')
+    .then(resp => resp.json())
+    .then(movies => {
+        movies.forEach(movie => {
+            addtoSeenList(movie)
+            if (movie.review){
+                console.log(movie.review)
+                // appendReview(e, addSeen, reviewForm, movie.review)
+            }
+        })
+    })
+}
+
+const configObj = {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+    },
+    body: {
+
+    }
+}
+
+function postReview(){
+    fetch("http://localhost:8080/seen", configObj)
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+}
+
+function deleteRequest(){
+    fetch(`http://localhost:8080/${list}/${id}`, {
+        method: "DELETE"
+    })
+}
+
 document.addEventListener("DOMContentLoaded", ()=>{
     selectForm()
+    fetchWatch()
+    fetchSeen()
+
 })
+
