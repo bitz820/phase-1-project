@@ -48,6 +48,50 @@ function handleRemove (){
     removeBtn.remove()
 }
 
+function appendReview(e, addSeen, reviewForm){
+    e.preventDefault()
+    const userReview = document.createElement("p")
+    userReview.innerText = e.target[0].value
+    e.target[0].value = ""
+    addSeen.insertBefore(userReview, reviewForm)
+}
+
+function createReviewForm(addReviewBtn, addSeen){
+    const reviewForm = document.createElement("form")
+    // reviewForm.setAttribute("method", "post")
+    // reviewForm.setAttribute("action", "submit.php")
+    const reviewBox = document.createElement('input')
+    reviewBox.setAttribute("type", "text")
+    reviewBox.setAttribute("name", "review")
+    reviewBox.setAttribute("placeholder", "Enter Review Here")
+    const submitReviewBtn = document.createElement("input")
+    submitReviewBtn.setAttribute("type", "submit");
+    submitReviewBtn.setAttribute("value", "Submit")
+    reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
+    reviewForm.append(reviewBox, submitReviewBtn)
+    addSeen.append(reviewForm)
+}               
+
+function addtoSeenList (result){
+    const seenList = document.querySelector(".seen")
+    const addSeen = document.createElement("li")
+    const removeBtn = document.createElement("button")
+    removeBtn.innerText = "Delete this movie!"
+    removeBtn.addEventListener("click", handleRemove)
+    addSeen.innerText = result.title
+    const addReviewBtn = document.createElement("button")
+    addReviewBtn.innerText = "Click to add a Review!"
+    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
+    seenList.append(addSeen, removeBtn, addReviewBtn)
+    // When button is clicked, add a form with an input and a submit button -- this value should append to the current li as a reivew
+    // const review = document.createElement("input")
+    // reviewBtn.addEventListener("click", function (e){
+    //     console.log(e.target.input[1].value)
+    //     addSeen.append(review)
+    // })
+    // reviewBtn.append(review)
+}
+
 function addToWatchList (result){
     const watchList = document.querySelector(".watch")
     const addWatch = document.createElement("li")
@@ -56,27 +100,7 @@ function addToWatchList (result){
     removeBtn.addEventListener("click", handleRemove)
     addWatch.innerText = result.title
     watchList.append(addWatch, removeBtn)
-}
-function addtoSeenList (result){
-    const seenList = document.querySelector(".seen")
-    const addSeen = document.createElement("li")
-    const removeBtn = document.createElement("button")
-    const reviewBtn = document.createElement("button")
-    // When button is clicked, add a form with an input and a submit button -- this value should append to the current li as a reivew
-    // reviewBtn.innerText = "Add a Reivew!"
-    // const review = document.createElement("input")
-    // reviewBtn.addEventListener("click", function (e){
-    //     console.log(e.target.input[1].value)
-    //     addSeen.append(review)
-    // })
-    // reviewBtn.append(review)
-    removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleRemove)
-    addSeen.innerText = result.title
-    addSeen.append(reviewBtn)
-    seenList.append(addSeen, removeBtn)
-}
-
+}    
 
 document.addEventListener("DOMContentLoaded", ()=>{
     selectForm()
