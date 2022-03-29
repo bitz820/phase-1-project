@@ -3,12 +3,12 @@ body {
 }
 
 .list-container{
-    background-color: #92B6B1;
     display: flex;
     justify-content: space-around;
 }
 
 .results-container {
+    text-align: center;
     background-color: #B2C9AB;
     border: 5px black solid;
     margin: 10px;
@@ -24,10 +24,27 @@ body {
     /* justify-content: center; */
 }
 
-.movie-card {
+.movieCard {
     background-color: #666A86;
-    /* display: flex; */
-    border: 5px black;
+    display: flex;
+    flex-direction: column;
+    border: 10px goldenrod dotted;
+    padding: 10px;
+    margin: 20px;
+}
+
+.movieCard button {
+    background-color: black;
+    color: red;
+    font-size: 15px;
+    padding: 5px
+}
+
+.btnDivStyle{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 20px;
+    margin: 30px;
 }
 
 ul {
@@ -49,5 +66,7 @@ ul.seen {
 }
 
 img {
-    max-width: 100%; 
-    max-height: 100%;}
+    max-width: 350px; 
+    max-height: 350px;
+    align-self: center
+}

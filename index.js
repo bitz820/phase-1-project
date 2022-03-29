@@ -28,24 +28,65 @@ function fetchSearch(movie) {
 function createMovieCard (result){
     const resultsContainer = document.querySelector(".results-container")
     const movieCard = document.createElement('card')
-    const title = document.createElement('h2')
-    title.innerText = result.title
+    movieCard.className = "movieCard"
+    const title = document.createElement('h1')
+    title.innerText = `Title: ${result.title}`
     const image = document.createElement('img')
     image.src = result.image
     image.className = "image"
+    const btnDiv = document.createElement("div")
+    btnDiv.className = "btnDivStyle"
     const watchBtn = document.createElement('button')
     watchBtn.innerText = "Add to Watch List!"
     watchBtn.addEventListener("click", () => {addToWatchList(result)})
     const seenBtn = document.createElement('button')
     seenBtn.innerText = "Add to Movies You've Seen!"
     seenBtn.addEventListener("click", () => {addtoSeenList(result)})
-    movieCard.append(title, image, watchBtn, seenBtn)
+    btnDiv.append(watchBtn, seenBtn)
+    movieCard.append(title, image, btnDiv)
     resultsContainer.append(movieCard)
 }
 
+function appendReview(e, addSeen, reviewForm){
+    e.preventDefault()
+    const userReview = document.createElement("p")
+    userReview.innerText = e.target[0].value
+    e.target[0].value = ""
+    addSeen.insertBefore(userReview, reviewForm)
+}
+
+function createReviewForm(addReviewBtn, addSeen){
+    const reviewForm = document.createElement("form")
+    // reviewForm.setAttribute("method", "post")
+    // reviewForm.setAttribute("action", "submit.php")
+    const reviewBox = document.createElement('input')
+    reviewBox.setAttribute("type", "text")
+    reviewBox.setAttribute("name", "review")
+    reviewBox.setAttribute("placeholder", "Enter Review Here")
+    const submitReviewBtn = document.createElement("input")
+    submitReviewBtn.setAttribute("type", "submit");
+    submitReviewBtn.setAttribute("value", "Submit")
+    reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
+    reviewForm.append(reviewBox, submitReviewBtn)
+    addSeen.append(reviewForm)
+}      
+
 function handleRemove (){
-    removeBtn.previousSibling.remove()
-    removeBtn.remove()
+    this.parentElement.remove()
+}
+
+function addtoSeenList (result){
+    const seenList = document.querySelector(".seen")
+    const addSeen = document.createElement("li")
+    const removeBtn = document.createElement("button")
+    removeBtn.innerText = "Delete this movie!"
+    removeBtn.addEventListener("click", handleRemove)
+    addSeen.innerText = result.title
+    const addReviewBtn = document.createElement("button")
+    addReviewBtn.innerText = "Click to add a Review!"
+    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
+    addSeen.append(removeBtn, addReviewBtn)
+    seenList.append(addSeen)
 }
 
 function addToWatchList (result){
@@ -55,52 +96,10 @@ function addToWatchList (result){
     removeBtn.innerText = "Delete this movie!"
     removeBtn.addEventListener("click", handleRemove)
     addWatch.innerText = result.title
-    watchList.append(addWatch, removeBtn)
-}
-function addtoSeenList (result){
-    const seenList = document.querySelector(".seen")
-    const addSeen = document.createElement("li")
-    const removeBtn = document.createElement("button")
-    const reviewBtn = document.createElement("button")
-    // When button is clicked, add a form with an input and a submit button -- this value should append to the current li as a reivew
-    // reviewBtn.innerText = "Add a Reivew!"
-    // const review = document.createElement("input")
-    // reviewBtn.addEventListener("click", function (e){
-    //     console.log(e.target.input[1].value)
-    //     addSeen.append(review)
-    // })
-    // reviewBtn.append(review)
-    removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleRemove)
-    addSeen.innerText = result.title
-    addSeen.append(reviewBtn)
-    seenList.append(addSeen, removeBtn)
-}
-
+    addWatch.append(removeBtn)
+    watchList.append(addWatch)
+}    
 
 document.addEventListener("DOMContentLoaded", ()=>{
     selectForm()
-})
-
-
-// {"searchType":"Movie","expression":"inception 2010","results":[{"id":"tt1375666","resultType":"Title","image":"https://imdb-api.com/images/original/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_Ratio0.6800_AL_.jpg","title":"Inception","description":"(2010)"},
-
-// {"id":"tt1790736","resultType":"Title","image":"https://imdb-api.com/images/original/MV5BMjE0NGIwM2EtZjQxZi00ZTE5LWExN2MtNDBlMjY1ZmZkYjU3XkEyXkFqcGdeQXVyNjMwNzk3Mjk@._V1_Ratio0.6800_AL_.jpg","title":"Inception: Motion Comics","description":"(2010 Video)"},
-
-// {"id":"tt5295990","resultType":"Title","image":"https://imdb-api.com/images/original/MV5BZGFjOTRiYjgtYjEzMS00ZjQ2LTkzY2YtOGQ0NDI2NTVjOGFmXkEyXkFqcGdeQXVyNDQ5MDYzMTk@._V1_Ratio0.6800_AL_.jpg","title":"Inception: Jump Right Into the Action","description":"(2010 Video)"},
-
-// {"id":"tt1686778","resultType":"Title","image":"https://imdb-api.com/images/original/nopicture.jpg","title":"Inception: 4Movie Premiere Special","description":"(2010 TV Movie)"},
-
-// {"id":"tt12960252","resultType":"Title","image":"https://imdb-api.com/images/original/nopicture.jpg","title":"Inception Premiere","description":"(2010)"}
-
-// ],"errorMessage":""}
-
-const reviewForm = document.querySelector('#movie-review').addEventListener('submit', function(e){
-    e.preventDefault();
-    const review = document.querySelector('#review').value
-    console.log(review)
-    const p = document.createElement('p')
-    p.textContent = review;
-    document.querySelector('.review-container').appendChild(p)
-    e.target.reset()
 })
