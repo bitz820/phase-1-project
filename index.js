@@ -56,6 +56,7 @@ function appendReview(e, addSeen, reviewForm) {
     const userReview = document.createElement("p")
     userReview.innerText = e.target[0].value
     e.target[0].value = ""
+    reviewForm.className = "hideReview"
     addSeen.insertBefore(userReview, reviewForm)
     postReview()
 }
@@ -69,39 +70,12 @@ function createReviewForm(addReviewBtn, addSeen) {
     reviewBox.setAttribute("name", "review")
     reviewBox.setAttribute("placeholder", "Enter Review Here")
     const submitReviewBtn = document.createElement("input")
+    reviewForm.className = "showReview"
     submitReviewBtn.setAttribute("type", "submit");
     submitReviewBtn.setAttribute("value", "Submit")
     reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
     reviewForm.append(reviewBox, submitReviewBtn)
     addSeen.append(reviewForm)
-}
-
-function handleSeenRemove() {
-    this.parentElement.parentElement.remove()
-    // deleteRequest()
-}
-
-function handleWatchRemove(){
-    this.parentElement.remove()
-    // deleteRequest()
-
-}
-
-function addtoSeenList(result) {
-    const seenList = document.querySelector(".seen")
-    const addSeen = document.createElement("li")
-    const br = document.createElement("br")
-    const editBtnContainer = document.createElement("div")
-    const removeBtn = document.createElement("button")
-    const addReviewBtn = document.createElement("button")
-    addSeen.innerText = result.title
-    removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleSeenRemove)
-    addReviewBtn.innerText = "Click to add a Review!"
-    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
-    editBtnContainer.append(removeBtn, addReviewBtn)
-    addSeen.append(br, editBtnContainer)
-    seenList.append(addSeen)
 }
 
 function addToWatchList(result) {
@@ -116,14 +90,43 @@ function addToWatchList(result) {
     watchList.append(addWatch)
 }
 
+function handleWatchRemove(){
+    this.parentElement.remove()
+    // deleteRequest()
+
+}
+
 function fetchWatch() {
-// function fetchLists(){}
-    fetch('http://localhost:8080/toWatch')
-    // fetch(`http://localhost:8080/${list}`)
-        .then(resp => resp.json())
-        .then(movies => {
-            movies.forEach(movie => addToWatchList(movie))
-        })
+    // function fetchLists(){}
+        fetch('http://localhost:8080/toWatch')
+        // fetch(`http://localhost:8080/${list}`)
+            .then(resp => resp.json())
+            .then(movies => {
+                movies.forEach(movie => addToWatchList(movie))
+            })
+    }    
+
+function addtoSeenList(result) {
+    const seenList = document.querySelector(".seen")
+    const addSeen = document.createElement("li")
+    const br = document.createElement("br")
+    const editBtnContainer = document.createElement("div")
+    const removeBtn = document.createElement("button")
+    const addReviewBtn = document.createElement("button")
+    addSeen.innerText = result.title
+    removeBtn.innerText = "Delete this movie!"
+    addReviewBtn.innerText = "Click to add a Review!"
+    editBtnContainer.className = "editBtnStyle"
+    removeBtn.addEventListener("click", handleSeenRemove)
+    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
+    editBtnContainer.append(removeBtn, addReviewBtn)
+    addSeen.append(br, editBtnContainer)
+    seenList.append(addSeen)
+}
+
+function handleSeenRemove() {
+    this.parentElement.parentElement.remove()
+    // deleteRequest()
 }
 
 function fetchSeen() {

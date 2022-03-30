@@ -43,7 +43,9 @@ body {
     margin: 30px;
 }
 
-.movieCard button {
+/* .movieCard */
+
+button {
     background-color: black;
     color: red;
     font-size: 16px;
@@ -52,7 +54,9 @@ body {
     transition: background-color .5s ease-in-out 100ms
 }
 
-.movieCard button:hover {
+/* .movieCard  */
+
+button:hover {
     background-color: red ;
     color: black;
 }
@@ -88,4 +92,16 @@ img {
     max-width: 350px; 
     max-height: 350px;
     align-self: center
+}
+
+.hideReview {
+    display: none;
+}
+
+.editBtnStyle {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 8px;
+    margin: 10px
+
 }
