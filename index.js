@@ -76,33 +76,43 @@ function createReviewForm(addReviewBtn, addSeen) {
     addSeen.append(reviewForm)
 }
 
-function handleRemove() {
+function handleSeenRemove() {
+    this.parentElement.parentElement.remove()
+    // deleteRequest()
+}
+
+function handleWatchRemove(){
     this.parentElement.remove()
     // deleteRequest()
+
 }
 
 function addtoSeenList(result) {
     const seenList = document.querySelector(".seen")
     const addSeen = document.createElement("li")
+    const br = document.createElement("br")
+    const editBtnContainer = document.createElement("div")
     const removeBtn = document.createElement("button")
-    removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleRemove)
-    addSeen.innerText = result.title
     const addReviewBtn = document.createElement("button")
+    addSeen.innerText = result.title
+    removeBtn.innerText = "Delete this movie!"
+    removeBtn.addEventListener("click", handleSeenRemove)
     addReviewBtn.innerText = "Click to add a Review!"
     addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
-    addSeen.append(removeBtn, addReviewBtn)
+    editBtnContainer.append(removeBtn, addReviewBtn)
+    addSeen.append(br, editBtnContainer)
     seenList.append(addSeen)
 }
 
 function addToWatchList(result) {
     const watchList = document.querySelector(".watch")
     const addWatch = document.createElement("li")
+    const br = document.createElement("br")
     const removeBtn = document.createElement("button")
     removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleRemove)
+    removeBtn.addEventListener("click", handleWatchRemove)
     addWatch.innerText = result.title
-    addWatch.append(removeBtn)
+    addWatch.append(br, removeBtn)
     watchList.append(addWatch)
 }
 
