@@ -45,7 +45,7 @@ function createMovieCard(result) {
     watchBtn.addEventListener("click", () => { addToWatchList(result) })
     const seenBtn = document.createElement('button')
     seenBtn.innerText = "Add to Movies You've Seen!"
-    seenBtn.addEventListener("click", () => { addtoSeenList(result) })
+    seenBtn.addEventListener("click", () => { addToSeenList(result) })
     btnDiv.append(watchBtn, seenBtn)
     movieCard.append(title, image, btnDiv)
     resultsContainer.append(movieCard)
@@ -58,7 +58,6 @@ function appendReview(e, addSeen, reviewForm) {
     e.target[0].value = ""
     reviewForm.className = "hideReview"
     addSeen.insertBefore(userReview, reviewForm)
-    postReview()
 }
 
 function createReviewForm(addReviewBtn, addSeen) {
@@ -96,17 +95,7 @@ function handleWatchRemove(){
 
 }
 
-function fetchWatch() {
-    // function fetchLists(){}
-        fetch('http://localhost:8080/toWatch')
-        // fetch(`http://localhost:8080/${list}`)
-            .then(resp => resp.json())
-            .then(movies => {
-                movies.forEach(movie => addToWatchList(movie))
-            })
-    }    
-
-function addtoSeenList(result) {
+function addToSeenList(result) {
     const seenList = document.querySelector(".seen")
     const addSeen = document.createElement("li")
     const br = document.createElement("br")
@@ -129,19 +118,21 @@ function handleSeenRemove() {
     // deleteRequest()
 }
 
-function fetchSeen() {
-    fetch('http://localhost:8080/seen')
-        .then(resp => resp.json())
-        .then(movies => {
-            movies.forEach(movie => {
-                addtoSeenList(movie)
-                if (movie.review) {
-                    console.log(movie.review)
-                    // appendReview(e, addSeen, reviewForm, movie.review)
-                }
-            })
+function fetchLists(){
+    fetch("http://localhost:8080/userMovies")
+    .then(resp => resp.json())
+    .then(data => {
+        // For Each on both to watch and seen, run function
+       const watchArr = (data[0].toWatch)
+       watchArr.forEach(movie => addToWatchList(movie))
+
+       const seenArr = (data[1].seen)
+       seenArr.forEach(movie => {
+           addToSeenList(movie)
         })
+    })
 }
+
 
 const configObj = {
     method: "POST",
@@ -150,26 +141,51 @@ const configObj = {
         Accept: "application/json"
     },
     body: {
-
+        // "title" : `${movie.title}`
     }
 }
 
-function postReview() {
-    fetch("http://localhost:8080/seen", configObj)
+function postToList() {
+    fetch("http://localhost:8080/userMovies", configObj)
         .then(resp => resp.json())
         .then(data => console.log(data))
 }
 
-function deleteRequest() {
-    fetch(`http://localhost:8080/${list}/${id}`, {
-        method: "DELETE"
-    })
-}
+// function deleteRequest() {
+//     fetch(`http://localhost:8080/${list}/${id}`, {
+//         // Need an endpoint that matches the original fetch request, id will be accesible after post posts to db.json
+//         method: "DELETE"
+//     })
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
     selectForm()
-    fetchWatch()
-    fetchSeen()
+    // fetchWatch()
+    // fetchSeen()
+    fetchLists()
 
 })
 
+// function fetchWatch() {
+        //         fetch('http://localhost:8080/toWatch')
+             
+        //             .then(resp => resp.json())
+        //             .then(movies => {
+        //                 movies.forEach(movie => addToWatchList(movie))
+        //             })
+        //     }    
+        
+        // function fetchSeen() {
+        //     fetch('http://localhost:8080/seen')
+        //         .then(resp => resp.json())
+        //         .then(movies => {
+        //             movies.forEach(movie => {
+        //                 addToSeenList(movie)
+        //                 if (movie.review) {
+        //                     // take a look at this Add to seen list should happen 
+        //                     console.log(movie.review)
+        //                     // appendReview(e, addSeen, reviewForm, movie.review)
+        //                 }
+        //             })
+        //         })
+        // }
