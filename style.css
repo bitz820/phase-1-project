@@ -2,6 +2,15 @@ body {
     background-color:  #92B6B1;
 }
 
+.search {
+    text-align: center;
+    font-size: 30px;
+}
+
+#search-movies {
+        /* height:20px; */
+}
+
 .list-container{
     display: flex;
     justify-content: space-around;
@@ -11,7 +20,8 @@ body {
     text-align: center;
     background-color: #B2C9AB;
     border: 5px black solid;
-    margin: 10px;
+    margin: 100px;
+    margin-top: 50px;
     padding: 10px;
     text-align: center;
     list-style-position: inside;
@@ -30,15 +40,23 @@ body {
     flex-direction: column;
     border: 10px goldenrod dotted;
     padding: 10px;
-    margin: 20px;
+    margin: 30px;
 }
 
 .movieCard button {
     background-color: black;
     color: red;
-    font-size: 15px;
-    padding: 5px
+    font-size: 16px;
+    padding: 12px;
+    margin: 15px;
+    transition: background-color .5s ease-in-out 100ms
 }
+
+.movieCard button:hover {
+    background-color: red ;
+    color: black;
+}
+
 
 .btnDivStyle{
     display: flex;
@@ -50,6 +68,7 @@ body {
 ul {
     text-align: center;
     padding: 10px;
+    margin-bottom: 50px;
     list-style-position: inside;
 }
 

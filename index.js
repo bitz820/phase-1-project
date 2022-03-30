@@ -5,9 +5,9 @@ let requestOptions = {
     redirect: 'follow'
 };
 
-function selectForm (){
+function selectForm() {
     const form = document.querySelector("#search-movies")
-    form.addEventListener("submit", (e)=> {
+    form.addEventListener("submit", (e) => {
         e.preventDefault()
         const movie = (e.target[0].value)
         e.target[0].value = ""
@@ -16,19 +16,21 @@ function selectForm (){
 }
 
 function fetchSearch(movie) {
-  fetch(`https://imdb-api.com/en/API/SearchMovie/k_fkl6yn80/${movie}`, requestOptions)  
-    .then(response => response.json())
-    .then(data => {data.results.forEach(
-        result => {console.log(result)
-            
-            createMovieCard(result)
+    fetch(`https://imdb-api.com/en/API/SearchMovie/k_fkl6yn80/${movie}`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            data.results.forEach(
+                result => {
+                    console.log(result)
+                    createMovieCard(result)
+                })
         })
-    })
-    .catch(error => console.log('error', error))
+        .catch(error => console.log('error', error))
 }
 
-function createMovieCard (result){
+function createMovieCard(result) {
     const resultsContainer = document.querySelector(".results-container")
+    // resultsContainer.innerText = ""
     const movieCard = document.createElement('card')
     movieCard.className = "movieCard"
     const title = document.createElement('h1')
@@ -40,16 +42,16 @@ function createMovieCard (result){
     btnDiv.className = "btnDivStyle"
     const watchBtn = document.createElement('button')
     watchBtn.innerText = "Add to Watch List!"
-    watchBtn.addEventListener("click", () => {addToWatchList(result)})
+    watchBtn.addEventListener("click", () => { addToWatchList(result) })
     const seenBtn = document.createElement('button')
     seenBtn.innerText = "Add to Movies You've Seen!"
-    seenBtn.addEventListener("click", () => {addtoSeenList(result)})
+    seenBtn.addEventListener("click", () => { addtoSeenList(result) })
     btnDiv.append(watchBtn, seenBtn)
     movieCard.append(title, image, btnDiv)
     resultsContainer.append(movieCard)
 }
 
-function appendReview(e, addSeen, reviewForm){
+function appendReview(e, addSeen, reviewForm) {
     e.preventDefault()
     const userReview = document.createElement("p")
     userReview.innerText = e.target[0].value
@@ -58,7 +60,7 @@ function appendReview(e, addSeen, reviewForm){
     postReview()
 }
 
-function createReviewForm(addReviewBtn, addSeen){
+function createReviewForm(addReviewBtn, addSeen) {
     const reviewForm = document.createElement("form")
     // reviewForm.setAttribute("method", "post")
     // reviewForm.setAttribute("action", "submit.php")
@@ -72,14 +74,14 @@ function createReviewForm(addReviewBtn, addSeen){
     reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
     reviewForm.append(reviewBox, submitReviewBtn)
     addSeen.append(reviewForm)
-}      
+}
 
-function handleRemove (){
+function handleRemove() {
     this.parentElement.remove()
     // deleteRequest()
 }
 
-function addtoSeenList (result){
+function addtoSeenList(result) {
     const seenList = document.querySelector(".seen")
     const addSeen = document.createElement("li")
     const removeBtn = document.createElement("button")
@@ -93,7 +95,7 @@ function addtoSeenList (result){
     seenList.append(addSeen)
 }
 
-function addToWatchList (result){
+function addToWatchList(result) {
     const watchList = document.querySelector(".watch")
     const addWatch = document.createElement("li")
     const removeBtn = document.createElement("button")
@@ -102,30 +104,30 @@ function addToWatchList (result){
     addWatch.innerText = result.title
     addWatch.append(removeBtn)
     watchList.append(addWatch)
-}    
+}
 
-function fetchWatch (){
+function fetchWatch() {
 // function fetchLists(){}
     fetch('http://localhost:8080/toWatch')
     // fetch(`http://localhost:8080/${list}`)
-    .then(resp => resp.json())
-    .then(movies => {
-        movies.forEach(movie => addToWatchList(movie))
-    })
+        .then(resp => resp.json())
+        .then(movies => {
+            movies.forEach(movie => addToWatchList(movie))
+        })
 }
 
-function fetchSeen (){
+function fetchSeen() {
     fetch('http://localhost:8080/seen')
-    .then(resp => resp.json())
-    .then(movies => {
-        movies.forEach(movie => {
-            addtoSeenList(movie)
-            if (movie.review){
-                console.log(movie.review)
-                // appendReview(e, addSeen, reviewForm, movie.review)
-            }
+        .then(resp => resp.json())
+        .then(movies => {
+            movies.forEach(movie => {
+                addtoSeenList(movie)
+                if (movie.review) {
+                    console.log(movie.review)
+                    // appendReview(e, addSeen, reviewForm, movie.review)
+                }
+            })
         })
-    })
 }
 
 const configObj = {
@@ -139,19 +141,19 @@ const configObj = {
     }
 }
 
-function postReview(){
+function postReview() {
     fetch("http://localhost:8080/seen", configObj)
-    .then(resp => resp.json())
-    .then(data => console.log(data))
+        .then(resp => resp.json())
+        .then(data => console.log(data))
 }
 
-function deleteRequest(){
+function deleteRequest() {
     fetch(`http://localhost:8080/${list}/${id}`, {
         method: "DELETE"
     })
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", () => {
     selectForm()
     fetchWatch()
     fetchSeen()
