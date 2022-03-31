@@ -1,5 +1,3 @@
-// Bianca, Santiago
-
 let requestOptions = {
     method: 'GET',
     redirect: 'follow'
