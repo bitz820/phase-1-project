@@ -1,21 +1,109 @@
+/* Global */
 body {
     background-color:  #92B6B1;
+    font-family: 'Dekko'
 }
 
+h1 {
+    color: black;
+    background-color: inherit;
+    animation: glow 1s ease-in-out infinite alternate
+}
+
+/* KeyFrames */
+@keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(+10px);
+      }
+  
+    40% {
+      transform: translateX(+20px) ;
+    }
+
+    60% {
+        transform: translateY(-10px);
+      }
+  
+    80% {
+      transform: translateX(-20px);
+    }
+}
+
+@keyframes glow {
+    to {
+        text-shadow: 0 0 10px #eeeeee, 0 0 20px goldenrod, 0 0 30px goldenrod, 0 0 40px goldenrod, 0 0 50px goldenrod;
+    }
+}
+
+/* Button Styling */
+button {
+    border: none;
+    background-color: black;
+    color: red;
+    font-size: 16px;
+    font-family: 'Dekko';
+    padding: 12px;
+    margin: 15px;
+    border-radius: 22%;
+    transition: background-color 2s ease-in-out;
+    animation: 2s
+}
+
+button:hover {
+    background-color: red ;
+    color: black;
+    /* animation: 2s; */
+    transform: scale(1.3);
+}
+
+button.reset:hover {
+    animation: bounce 3s infinite;
+}
+
+.btnDivStyle{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 20px;
+    margin: 30px;
+}
+
+  /* Form Styling */
+form input {
+    border: none;
+    background-color: #B2C9AB;
+    color: #666A86;
+    font-size: 15px;
+    border-radius: 15%;
+}
+
+form#search-movies input {
+    border: none;
+    background-color: #B2C9AB;
+    color: #666A86;
+    font-size: 25px;
+    border-radius: 15%;
+}
+
+form#search-movies:hover{
+    transform: scale(1.5);
+    transition:  2s ease-in-out;
+}
+
+::placeholder {
+    color: #666A86;
+}
+
+/* Header Styling */
 .search {
     text-align: center;
     font-size: 30px;
 }
 
-#search-movies {
-        /* height:20px; */
-}
-
-.list-container{
-    display: flex;
-    justify-content: space-around;
-}
-
+/* Search Container Styling */
 .results-container {
     text-align: center;
     background-color: #B2C9AB;
@@ -27,13 +115,6 @@ body {
     list-style-position: inside;
 }
 
-.list-container ul{
-    /* display: flex;
-    flex-direction: column; */
-    border: 5px black solid;
-    /* justify-content: center; */
-}
-
 .movieCard {
     background-color: #666A86;
     display: flex;
@@ -41,51 +122,6 @@ body {
     border: 10px goldenrod dotted;
     padding: 10px;
     margin: 30px;
-}
-
-/* .movieCard */
-
-button {
-    background-color: black;
-    color: red;
-    font-size: 16px;
-    padding: 12px;
-    margin: 15px;
-    transition: background-color .5s ease-in-out 100ms
-}
-
-/* .movieCard  */
-
-button:hover {
-    background-color: red ;
-    color: black;
-}
-
-
-.btnDivStyle{
-    display: flex;
-    justify-content: space-around;
-    padding-top: 20px;
-    margin: 30px;
-}
-
-ul {
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 50px;
-    list-style-position: inside;
-}
-
-ul.watch {
-    background-color: #E8DDB5;
-    text-align: center;
-    list-style-position: inside;
-}
-
-ul.seen {
-    background-color: #788AA3;
-    text-align: center;
-    list-style-position: inside;
 }
 
 img {
@@ -98,7 +134,51 @@ img {
 
 img:hover {
     transform: scale(1.3) rotate(1080deg);
+}
 
+
+/* Lists Styling */
+.list-container{
+    display: flex;
+    justify-content: space-around;
+}
+
+.list-container ul{
+    /* display: flex;
+    flex-direction: column; */
+    border: 5px black solid;
+    /* justify-content: center; */
+}
+
+ul {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 50px;
+    list-style-position: inside;
+}
+
+ul.watch {
+    background-color: #E8DDB5;
+    text-align: center;
+}
+
+ul.seen {
+    background-color: #788AA3;
+    text-align: center;
+}
+
+.watch li {
+    list-style: none;
+    font-family: 'Dekko';
+    font-size: 22px;
+    color:#788AA3
+}
+
+.seen li {
+    list-style: none;
+    font-family: 'Dekko';
+    font-size: 22px;
+    color:#E8DDB5
 }
 
 .hideReview {
@@ -110,5 +190,4 @@ img:hover {
     justify-content: space-evenly;
     padding: 8px;
     margin: 10px
-
 }

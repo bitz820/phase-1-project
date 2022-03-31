@@ -3,6 +3,28 @@ let requestOptions = {
     redirect: 'follow'
 };
 
+function removeMovieList() {
+    const button = document.querySelector('.reset')
+    button.addEventListener("click", () => {    
+        const resultsContainer = document.querySelector(".results-container")
+        resultsContainer.innerText = ""
+        const title = document.createElement("h1")
+        title.innerText = "Results Returned:"
+        resultsContainer.append(title)
+    })
+}
+
+function fetchLists(){
+    fetch("http://localhost:8080/userMovies")
+    .then(resp => resp.json())
+    .then(data => {
+       const watchArr = (data[0].toWatch)
+       watchArr.forEach(movie => addToWatchList(movie))
+       const seenArr = (data[1].seen)
+       seenArr.forEach(movie => addToSeenList(movie))
+    })
+}
+
 function selectForm() {
     const form = document.querySelector("#search-movies")
     form.addEventListener("submit", (e) => {
@@ -16,13 +38,7 @@ function selectForm() {
 function fetchSearch(movie) {
     fetch(`https://imdb-api.com/en/API/SearchMovie/k_fkl6yn80/${movie}`, requestOptions)
         .then(response => response.json())
-        .then(data => {
-            data.results.forEach(
-                result => {
-                    // console.log(result)
-                    createMovieCard(result)
-                })
-        })
+        .then(data => {data.results.forEach(result => createMovieCard(result))})
         .catch(error => console.log('error', error))
 }
 
@@ -42,13 +58,68 @@ function createMovieCard(result) {
     btnDiv.className = "btnDivStyle"
     const watchBtn = document.createElement('button')
     watchBtn.innerText = "Add to Watch List!"
-    watchBtn.addEventListener("click", () => { addToWatchList(result) })
+    watchBtn.addEventListener("click", () => addToWatchList(result))
     const seenBtn = document.createElement('button')
     seenBtn.innerText = "Add to Movies You've Seen!"
-    seenBtn.addEventListener("click", () => { addToSeenList(result) })
+    seenBtn.addEventListener("click", () => addToSeenList(result))
     btnDiv.append(watchBtn, seenBtn)
     movieCard.append(title, image, btnDiv)
     resultsContainer.append(movieCard)
+}
+
+function addToWatchList(result) {
+    const watchList = document.querySelector(".watch")
+    const addWatch = document.createElement("li")
+    addWatch.innerText = result.title
+    const removeBtn = document.createElement("button")
+    removeBtn.innerText = "Delete this movie!"
+    const br = document.createElement("br")
+    removeBtn.addEventListener("click", handleWatchRemove)
+    addWatch.append(br, removeBtn)
+    watchList.append(addWatch)
+}
+
+function addToSeenList(result) {
+    const seenList = document.querySelector(".seen")
+    const addSeen = document.createElement("li")
+    addSeen.innerText = result.title
+    const editBtnContainer = document.createElement("div")
+    editBtnContainer.className = "editBtnStyle"
+    const removeBtn = document.createElement("button")
+    removeBtn.innerText = "Delete this movie!"
+    const addReviewBtn = document.createElement("button")
+    addReviewBtn.innerText = "Click to add a Review!"
+    const br = document.createElement("br")
+    removeBtn.addEventListener("click", handleSeenRemove)
+    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
+    editBtnContainer.append(removeBtn, addReviewBtn)
+    addSeen.append(br, editBtnContainer)
+    seenList.append(addSeen)
+}
+
+function handleWatchRemove(){
+    this.parentElement.remove()
+    deleteRequestWatch()
+}
+
+function handleSeenRemove() {
+    this.parentElement.parentElement.remove()
+    deleteRequest()
+}
+
+function createReviewForm(addReviewBtn, addSeen) {
+    const reviewForm = document.createElement("form")
+    reviewForm.className = "showReview"
+    const reviewBox = document.createElement('input')
+    reviewBox.setAttribute("type", "text")
+    reviewBox.setAttribute("name", "review")
+    reviewBox.setAttribute("placeholder", "Enter Review Here")
+    const submitReviewBtn = document.createElement("input")
+    submitReviewBtn.setAttribute("type", "submit");
+    submitReviewBtn.setAttribute("value", "Submit")
+    reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
+    reviewForm.append(reviewBox, submitReviewBtn)
+    addSeen.append(reviewForm)
 }
 
 function appendReview(e, addSeen, reviewForm) {
@@ -60,109 +131,36 @@ function appendReview(e, addSeen, reviewForm) {
     addSeen.insertBefore(userReview, reviewForm)
 }
 
-function createReviewForm(addReviewBtn, addSeen) {
-    const reviewForm = document.createElement("form")
-    // reviewForm.setAttribute("method", "post")
-    // reviewForm.setAttribute("action", "submit.php")
-    const reviewBox = document.createElement('input')
-    reviewBox.setAttribute("type", "text")
-    reviewBox.setAttribute("name", "review")
-    reviewBox.setAttribute("placeholder", "Enter Review Here")
-    const submitReviewBtn = document.createElement("input")
-    reviewForm.className = "showReview"
-    submitReviewBtn.setAttribute("type", "submit");
-    submitReviewBtn.setAttribute("value", "Submit")
-    reviewForm.addEventListener("submit", (e) => appendReview(e, addSeen, reviewForm))
-    reviewForm.append(reviewBox, submitReviewBtn)
-    addSeen.append(reviewForm)
-}
-
-function addToWatchList(result) {
-    const watchList = document.querySelector(".watch")
-    const addWatch = document.createElement("li")
-    const br = document.createElement("br")
-    const removeBtn = document.createElement("button")
-    removeBtn.innerText = "Delete this movie!"
-    removeBtn.addEventListener("click", handleWatchRemove)
-    addWatch.innerText = result.title
-    addWatch.append(br, removeBtn)
-    watchList.append(addWatch)
-}
-
-function handleWatchRemove(){
-    this.parentElement.remove()
-    // deleteRequest()
-
-}
-
-function addToSeenList(result) {
-    const seenList = document.querySelector(".seen")
-    const addSeen = document.createElement("li")
-    const br = document.createElement("br")
-    const editBtnContainer = document.createElement("div")
-    const removeBtn = document.createElement("button")
-    const addReviewBtn = document.createElement("button")
-    addSeen.innerText = result.title
-    removeBtn.innerText = "Delete this movie!"
-    addReviewBtn.innerText = "Click to add a Review!"
-    editBtnContainer.className = "editBtnStyle"
-    removeBtn.addEventListener("click", handleSeenRemove)
-    addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
-    editBtnContainer.append(removeBtn, addReviewBtn)
-    addSeen.append(br, editBtnContainer)
-    seenList.append(addSeen)
-}
-
-function handleSeenRemove() {
-    this.parentElement.parentElement.remove()
-    // deleteRequest()
-}
-
-function fetchLists(){
-    fetch("http://localhost:8080/userMovies")
-    .then(resp => resp.json())
-    .then(data => {
-        // For Each on both to watch and seen, run function
-       const watchArr = (data[0].toWatch)
-       watchArr.forEach(movie => addToWatchList(movie))
-
-       const seenArr = (data[1].seen)
-       seenArr.forEach(movie => {
-           addToSeenList(movie)
-        })
-    })
-}
-
-
-const configObj = {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-    },
-    body: {
-        // "title" : `${movie.title}`
-    }
-}
-
 function postToList() {
+    const configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            // "title" : `${movie.title}`
+        })
+    }
     fetch("http://localhost:8080/userMovies", configObj)
         .then(resp => resp.json())
         .then(data => console.log(data))
 }
 
-// function deleteRequest() {
-//     fetch(`http://localhost:8080/${list}/${id}`, {
-//         // Need an endpoint that matches the original fetch request, id will be accesible after post posts to db.json
-//         method: "DELETE"
-//     })
-// }
+function deleteRequestWatch() {
+    fetch(`http://localhost:8080/userMovies/toWatch/${id}`, {
+        // Need an endpoint that matches the original fetch request, id will be accesible after post posts to db.json
+        method: "DELETE"
+    })
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
+    fetchLists()
     selectForm()
+    removeMovieList()
     // fetchWatch()
     // fetchSeen()
-    fetchLists()
 })
 
 // function fetchWatch() {
