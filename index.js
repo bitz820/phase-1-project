@@ -1,5 +1,3 @@
-// Bianca, Santiago
-
 let requestOptions = {
     method: 'GET',
     redirect: 'follow'
@@ -36,7 +34,9 @@ function createMovieCard(result) {
     const title = document.createElement('h1')
     title.innerText = `Title: ${result.title}`
     const image = document.createElement('img')
-    image.src = result.image
+    if (result.image === 'https://imdb-api.com/images/original/nopicture.jpg'){
+        image.src = 'https://c.tenor.com/ysAaYYul2DUAAAAM/waiting-skeleton.gif'
+    } else {image.src = result.image}
     image.className = "image"
     const btnDiv = document.createElement("div")
     btnDiv.className = "btnDivStyle"
@@ -163,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // fetchWatch()
     // fetchSeen()
     fetchLists()
-
 })
 
 // function fetchWatch() {
