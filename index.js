@@ -19,7 +19,7 @@ function fetchSearch(movie) {
         .then(data => {
             data.results.forEach(
                 result => {
-                    console.log(result)
+                    // console.log(result)
                     createMovieCard(result)
                 })
         })
