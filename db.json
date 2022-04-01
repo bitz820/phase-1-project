@@ -7,21 +7,9 @@
     {
       "title": "RENT",
       "id": 2
-    },
-    {
-      "title": "Mad Max",
-      "id": 3
     }
   ],
   "seen": [
-    {
-      "title": "The Avengers",
-      "id": 1
-    },
-    {
-      "title": "The Dropout",
-      "id": 2
-    },
     {
       "title": "St. Elmo's Fire",
       "id": 3
