@@ -12,10 +12,6 @@ h1 {
 
 /* KeyFrames */
 @keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-
     20% {
         transform: translateY(+10px);
       }

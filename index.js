@@ -14,15 +14,15 @@ function removeMovieList() {
     })
 }
 
-function fetchLists(){
-    fetch("http://localhost:8080/userMovies")
+function fetchWatch(){
+    fetch("http://localhost:3000/toWatch")
     .then(resp => resp.json())
-    .then(data => {
-       const watchArr = (data[0].toWatch)
-       watchArr.forEach(movie => addToWatchList(movie))
-       const seenArr = (data[1].seen)
-       seenArr.forEach(movie => addToSeenList(movie))
-    })
+    .then(data => {data.forEach(movie => addToWatchList(movie))})
+}
+function fetchSeen(){
+    fetch("http://localhost:3000/seen")
+    .then(resp => resp.json())
+    .then(data => {data.forEach(movie => addToSeenList(movie))})
 }
 
 function selectForm() {
@@ -74,7 +74,8 @@ function addToWatchList(result) {
     const removeBtn = document.createElement("button")
     removeBtn.innerText = "Delete this movie!"
     const br = document.createElement("br")
-    removeBtn.addEventListener("click", handleWatchRemove)
+    removeBtn.addEventListener("click", () => handleWatchRemove(addWatch, result, removeBtn))
+    postToWatch(addWatch)
     addWatch.append(br, removeBtn)
     watchList.append(addWatch)
 }
@@ -90,21 +91,26 @@ function addToSeenList(result) {
     const addReviewBtn = document.createElement("button")
     addReviewBtn.innerText = "Click to add a Review!"
     const br = document.createElement("br")
-    removeBtn.addEventListener("click", handleSeenRemove)
+    removeBtn.addEventListener("click", () => handleSeenRemove(addSeen, result, removeBtn))
     addReviewBtn.addEventListener("click", () => createReviewForm(addReviewBtn, addSeen))
+    postToSeen(addSeen)
     editBtnContainer.append(removeBtn, addReviewBtn)
-    addSeen.append(br, editBtnContainer)
+     addSeen.append(br, editBtnContainer)
     seenList.append(addSeen)
+   
+
 }
 
-function handleWatchRemove(){
-    this.parentElement.remove()
-    deleteRequestWatch()
+function handleWatchRemove(addWatch, result, removeBtn){
+    addWatch.remove()
+    removeBtn.remove()
+    deleteRequestWatch(addWatch, result)
 }
 
-function handleSeenRemove() {
-    this.parentElement.parentElement.remove()
-    deleteRequest()
+function handleSeenRemove(addSeen, result, removeBtn) {
+    addSeen.remove()
+    removeBtn.remove()
+    deleteRequestSeen(addSeen, result)
 }
 
 function createReviewForm(addReviewBtn, addSeen) {
@@ -131,7 +137,9 @@ function appendReview(e, addSeen, reviewForm) {
     addSeen.insertBefore(userReview, reviewForm)
 }
 
-function postToList() {
+function postToSeen(addSeen) {
+    console.log(addSeen)
+
     const configObj = {
         method: "POST",
         headers: {
@@ -139,50 +147,53 @@ function postToList() {
             Accept: "application/json"
         },
         body: JSON.stringify({
-            // "title" : `${movie.title}`
+            "title" : addSeen.innerText,
+            // "review" : 
         })
     }
-    fetch("http://localhost:8080/userMovies", configObj)
+    fetch(`http://localhost:3000/seen`, configObj)
         .then(resp => resp.json())
         .then(data => console.log(data))
 }
 
-function deleteRequestWatch() {
-    fetch(`http://localhost:8080/userMovies/toWatch/${id}`, {
-        // Need an endpoint that matches the original fetch request, id will be accesible after post posts to db.json
-        method: "DELETE"
-    })
+function postToWatch(addWatch) {
+    console.log(addWatch)
+
+    const configObj = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify({
+            "title" : addWatch.innerText
+        })
+    }
+    fetch(`http://localhost:3000/toWatch`, configObj)
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+}
+
+function deleteRequestWatch(addWatch, result) {
+    console.log(addWatch)
+    console.log(result)
+    fetch(`http://localhost:3000/toWatch/${result.id}`, {method: "DELETE"})
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+}
+
+function deleteRequestSeen(addSeen, result) {
+    console.log(addSeen)
+    console.log(result)
+    fetch(`http://localhost:3000/seen/${result.id}`, {method: "DELETE"})
+    .then(resp => resp.json())
+    .then(data => console.log(data))
 }
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetchLists()
     selectForm()
     removeMovieList()
-    // fetchWatch()
-    // fetchSeen()
+    fetchWatch()
+    fetchSeen()
 })
-
-// function fetchWatch() {
-        //         fetch('http://localhost:8080/toWatch')
-             
-        //             .then(resp => resp.json())
-        //             .then(movies => {
-        //                 movies.forEach(movie => addToWatchList(movie))
-        //             })
-        //     }    
-        
-        // function fetchSeen() {
-        //     fetch('http://localhost:8080/seen')
-        //         .then(resp => resp.json())
-        //         .then(movies => {
-        //             movies.forEach(movie => {
-        //                 addToSeenList(movie)
-        //                 if (movie.review) {
-        //                     // take a look at this Add to seen list should happen 
-        //                     console.log(movie.review)
-        //                     // appendReview(e, addSeen, reviewForm, movie.review)
-        //                 }
-        //             })
-        //         })
-        // }

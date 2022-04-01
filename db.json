@@ -1,39 +1,30 @@
 {
-    "userMovies": [
-        {
-            "toWatch": [
-                {
-                    "id": 1,
-                    "title": "Lilo and Stitch"
-                },
-                {
-                    "id": 2,
-                    "title": "Catch Me if You Can"
-                },
-                {
-                    "id": 3,
-                    "title": "Wreck It Ralph"
-                }
-            ]
-        },
-        {
-            "seen": [
-                {
-                    "id": 1,
-                    "title": "RENT",
-                    "review": null
-                },
-                {
-                    "id": 2,
-                    "title": "Moulin Rouge",
-                    "review": "Great Movie! I recommend"
-                },
-                {
-                    "id": 3,
-                    "title": "Mr. Bean's Great Adventure",
-                    "review": null
-                }
-            ]
-        }
-    ]
+  "toWatch": [
+    {
+      "title": "Lilo & Stitch",
+      "id": 1
+    },
+    {
+      "title": "RENT",
+      "id": 2
+    },
+    {
+      "title": "Mad Max",
+      "id": 3
+    }
+  ],
+  "seen": [
+    {
+      "title": "The Avengers",
+      "id": 1
+    },
+    {
+      "title": "The Dropout",
+      "id": 2
+    },
+    {
+      "title": "St. Elmo's Fire",
+      "id": 3
+    }
+  ]
 }
